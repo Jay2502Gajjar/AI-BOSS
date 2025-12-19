@@ -1,0 +1,7 @@
+Situation	          Reward
+Attack when close	   +10
+Attack when far	         -3
+Heal when HP < max	     +5
+Heal at full HP	        -5
+Move closer	             -1
+Move away	            -1
