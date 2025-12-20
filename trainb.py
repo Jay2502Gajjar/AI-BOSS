@@ -70,23 +70,27 @@ def step(state, action):
     return (boss_hp, player_hp, distance), reward, done
 
     
-state = (2,2,1)
-done = False
-steps = 0
-MAX_STEPS = 20
+eps = 200
 
-while not done and steps < MAX_STEPS:
+for ep in range(eps):
+    state = (2,2,1)
+    done = False
+    steps = 0
+    treward = 0
+    MAX_STEPS = 20
 
-    action = choose_action(state)
-    print("State:",state," Action: ",action)
+    while not done and steps < MAX_STEPS:
+        action = choose_action(state)
 
-    ns,reward ,done= step(state,action)
-    print("Next state:", ns, "Reward: ",reward)
+        ns,reward,done = step(state,action)
 
-    state = ns
-    steps +=1
+        qold = Q[(state,action)]
+        bqn = max(Q[(ns,a)] for a in actions)
+        Q[(state,action)] = qold+ alpha*(reward+ gamma*bqn - qold)
 
-if steps >= MAX_STEPS:
-    print("Episode ended due to time limit")
+        state = ns
+        treward += reward
+        steps +=1
 
-   
+    print("Episode:", ep, "Total Reward:", treward)
+
