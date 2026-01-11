@@ -59,47 +59,47 @@ def step(state, action):
     if action == 0 and distance == 0:        #attack
         player_hp -= 1
         reward += 10
-        boss_action = "BOSS ATTACKS"
+        boss_action = "boss attacks"
 
     elif action == 0 and distance == 1:
         reward -= 5
-        boss_action = "ATTACK FAILED (TOO FAR)"
+        boss_action = "cannot hit player too far"
 
     elif action == 1:                        #defend
-        boss_action = "BOSS DEFENDS"
+        boss_action = "boss defends"
 
     elif action == 2 and boss_hp < 2:        #heal
         boss_hp += 1
         reward += 5
-        boss_action = "BOSS HEALS"
+        boss_action = "heals"
 
     elif action == 2 and boss_hp == 2:
         reward -= 5
-        boss_action = "HEAL WASTED"
+        boss_action = "HP full heal wasted"
 
     elif action == 3:                        #move closer
         distance = 0
         reward += 1
-        boss_action = "BOSS MOVES CLOSER"
+        boss_action = "boss moves closer"
 
     elif action == 4:                        #move away
         distance = 1
         reward -= 1
-        boss_action = "BOSS MOVES AWAY"
+        boss_action = "boss moves away"
 
 
     if player_hp > 0 and distance == 0 and random.random() < 0.6:
         if action == 1:
             reward += 5
-            boss_action += " | BLOCKED PLAYER"
-            player_action = "PLAYER ATTACKS (BLOCKED)"
+            boss_action += " | blocked player"
+            player_action = "Player attacks (hit blocked)"
         else:
             boss_hp -= 1
             reward -= 10
-            boss_action += " | TOOK DAMAGE"
-            player_action = "PLAYER ATTACKS"
+            boss_action += " | took damage"
+            player_action = "player attacks"
     else:
-        player_action = "PLAYER DOES NOTHING"
+        player_action = "player does nothing"
 
     boss_hp = max(0,boss_hp)
     player_hp = max(0,player_hp)
@@ -139,7 +139,7 @@ for ep in range(eps):
         else:
             bqn = max(Q[(ns,a)] for a in actions)
 
-        Q[(state,action)] = qold +alpha *(reward + gamma*bqn-qold)
+        Q[(state,action)] = qold +alpha*(reward + gamma*bqn-qold)
 
         state = ns
         treward += reward
